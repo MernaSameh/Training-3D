@@ -2,11 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CuttingCounter : BaseCounter
+public class StoveCounter : BaseCounter
 {
-    [SerializeField] private CuttingResipeSO[] cuttingRecipeSOArray;
-
-    private int cuttingProgress;
+    [SerializeField] private FryingRecipeSO[] fryingRecipeSOArray;
 
     public override void Interact(Player player)
     {
@@ -21,6 +19,13 @@ public class CuttingCounter : BaseCounter
                     // Player carrying something that can be cut
                     player.GetKitchenObject().SetKitchenObjectParent(this);
                     cuttingProgress = 0;
+
+                    CuttingResipeSO cuttingResipeSO = GetCuttingResipeSOWithInput(GetKitchenObject().GetKitchenObjectSO());
+
+                    OnProgressChanged?.Invoke(this, new OnProgressChangedEventArgs
+                    {
+                        progressNormalized = (float)cuttingProgress / cuttingResipeSO.cuttingProgressMax
+                    });
                 }
             }
             else
@@ -39,26 +44,6 @@ public class CuttingCounter : BaseCounter
             {
                 // Player is not carrying anything
                 GetKitchenObject().SetKitchenObjectParent(player);
-            }
-        }
-    }
-
-    public override void InteractAlternate(Player player)
-    {
-        if (HasKitchenObject() && HasRecipeWithInput(GetKitchenObject().GetKitchenObjectSO()))
-        {
-            //There is a KitchenObject here AND it can be cut
-            cuttingProgress++;
-
-            CuttingResipeSO cuttingResipeSO = GetCuttingResipeSOWithInput(GetKitchenObject().GetKitchenObjectSO());
-
-            if (cuttingProgress >= cuttingResipeSO.cuttingProgressMax)
-            {
-                KitchenObjectSO outputKitchenObjectSO = GetOutputForInput(GetKitchenObject().GetKitchenObjectSO());
-
-                GetKitchenObject().DestroySelf();
-
-                KitchenObject.SpawnKitchenObject(outputKitchenObjectSO, this);
             }
         }
     }

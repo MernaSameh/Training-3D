@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class ContainerCounterVisual : MonoBehaviour
 {
-    private const string OPEN_CLOSE = "OpenClose";
+    private const string Cut = "OpenClose";
     [SerializeField] private ContainerCounter containerCounter;
     private Animator animator;
 
@@ -21,6 +21,6 @@ public class ContainerCounterVisual : MonoBehaviour
 
     private void ContainerCounter_OnPlayerGrabbedObject(object sender, EventArgs e)
     {
-        animator.SetTrigger(OPEN_CLOSE);
+        animator.SetTrigger(Cut);
     }
 }
