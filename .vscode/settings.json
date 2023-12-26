@@ -56,5 +56,6 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "Training 3D.sln"
+    "dotnet.defaultSolution": "Training-3D.sln",
+    "dotnet.preferCSharpExtension": true
 }
